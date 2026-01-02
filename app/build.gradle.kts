@@ -60,6 +60,8 @@ dependencies {
 
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.firebase.firestore)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
