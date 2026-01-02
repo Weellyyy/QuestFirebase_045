@@ -1,11 +1,14 @@
 package com.example.myfirebase.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -26,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myfirebase.R
+import com.example.myfirebase.modeldata.Siswa
 import com.example.myfirebase.view.route.DestinasiHome
 import com.example.myfirebase.view.viewmodel.HomeViewModel
 import com.example.myfirebase.view.viewmodel.PenyediaViewModel
@@ -121,6 +125,25 @@ fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
         )
         Button(onClick = retryAction) {
             Text(stringResource(R.string.retry))
+        }
+    }
+}
+
+@Composable
+fun DaftarSiswa(
+    itemSiswa: List<Siswa>,
+    onSiswaClick: (Siswa) -> Unit,
+    modifier: Modifier = Modifier
+){
+    LazyColumn (modifier = Modifier){
+        items(items = itemSiswa, key = {it.id}){
+            person ->
+            ItemSiswa(
+                siswa = person,
+                modifier = Modifier
+                    .padding(dimensionResource(R.dimen.padding_small))
+                    .clickable { onSiswaClick(person) },
+            )
         }
     }
 }
