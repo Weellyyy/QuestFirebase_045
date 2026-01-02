@@ -7,3 +7,5 @@ EntryScreen:
 Setelah Berhasil Tambah data:
 <img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/dff01d1d-d6ea-4586-9ab8-d7f4810abc4e" />
 
+Firebase:
+<img width="2560" height="1440" alt="image" src="https://github.com/user-attachments/assets/d2ff6dec-1289-4a0e-b576-90ad579eea26" />
