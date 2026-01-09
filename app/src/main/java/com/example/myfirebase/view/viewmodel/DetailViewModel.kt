@@ -5,9 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myfirebase.modeldata.Siswa
 import com.example.myfirebase.repositori.RepositorySiswa
 import com.example.myfirebase.view.route.DestinasiDetail
+import kotlinx.coroutines.launch
 import java.io.IOException
 
 sealed interface StatusUIDetail {
@@ -39,6 +41,16 @@ RepositorySiswa): ViewModel() {
             } catch (e: Exception) {
                 StatusUIDetail.Error
             }
+        }
+    }
+
+    suspend fun hapusSatuSiswa(){
+        try {
+            repositorySiswa.hapusSatuSiswa(idSiswa)
+            println("Sukses Hapus Data: $idSiswa")
+        }
+        catch (e:Exception){
+            println("Gagal Hapus Data: $idSiswa, ${e.message}")
         }
     }
 }
