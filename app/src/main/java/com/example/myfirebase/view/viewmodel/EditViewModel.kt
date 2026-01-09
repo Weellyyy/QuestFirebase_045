@@ -29,4 +29,10 @@ RepositorySiswa
     }
 }
 
+fun updateUiState(detailsiswa: DetailSiswa) {
+    uiStateSiswa =
+        UIStateSiswa(detailsiswa = detailsiswa, isEntryValid = validasiInput
+            (detailsiswa))
+}
+
 
