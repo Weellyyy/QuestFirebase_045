@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myfirebase.modeldata.DetailSiswa
 import com.example.myfirebase.modeldata.UIStateSiswa
+import com.example.myfirebase.modeldata.toDataSiswa
 import com.example.myfirebase.modeldata.toUiStateSiswa
 import com.example.myfirebase.repositori.RepositorySiswa
 import com.example.myfirebase.view.route.DestinasiDetail
@@ -31,20 +32,20 @@ RepositorySiswa
     }
     fun updateUiState(detailsiswa: DetailSiswa) {
         uiStateSiswa =
-            UIStateSiswa(detailsiswa = detailsiswa, isEntryValid = validasiInput
+            UIStateSiswa(detailSiswa = detailsiswa, isEntryValid = validasiInput
                 (detailsiswa))
     }
 
-    private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailsiswa): Boolean {
+    private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailSiswa): Boolean {
         return with(uiState) {
             nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
         }
     }
 
     suspend fun editSatuSiswa(){
-        if (validasiInput(uiStateSiswa.detailsiswa)){
+        if (validasiInput(uiStateSiswa.detailSiswa)){
             try {
-                repositorySiswa.editSatuSiswa(idSiswa,uiStateSiswa.detailsiswa.toDataSiswa
+                repositorySiswa.editSatuSiswa(idSiswa,uiStateSiswa.detailSiswa.toDataSiswa
                     ())
                 println("Update Sukses: $idSiswa")
             } catch (e: Exception) {
