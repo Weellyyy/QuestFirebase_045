@@ -47,10 +47,10 @@ RepositorySiswa): ViewModel() {
     suspend fun hapusSatuSiswa(){
         try {
             repositorySiswa.hapusSatuSiswa(idSiswa)
-            println("Sukses Hapus Data: $idSiswa")
+            println("Hapus Sukses: $idSiswa")
         }
         catch (e:Exception){
-            println("Gagal Hapus Data: $idSiswa, ${e.message}")
+            println("Hapus Error: ${e.message}")
         }
     }
 }
