@@ -42,4 +42,14 @@ private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailsiswa): Bool
     }
 }
 
-
+suspend fun editSatuSiswa(){
+    if (validasiInput(uiStateSiswa.detailsiswa)){
+        try {
+            repositorySiswa.editSatuSiswa(idSiswa,uiStateSiswa.detailsiswa.toDataSiswa
+                ())
+            println("Update Sukses: $idSiswa")
+        } catch (e: Exception) {
+            println("Update Error: ${e.message}")
+        }
+    }
+}
