@@ -20,7 +20,7 @@ class FirebaseRepositorySiswa : RepositorySiswa {
         return try {
             collection.get().await().documents.map { doc ->
                 Siswa(
-                    id = doc.getLong("id")?.toLong() ?: 0,
+                    id = doc.id.hashCode().toLong(),
                     nama = doc.getString("nama") ?: "",
                     alamat = doc.getString("alamat") ?: "",
                     telpon = doc.getString("telpon") ?: ""
@@ -34,7 +34,6 @@ class FirebaseRepositorySiswa : RepositorySiswa {
     override suspend fun postDataSiswa(siswa: Siswa) {
         val docRef = if (siswa.id == 0L) collection.document() else collection.document(siswa.id.toString())
         val data = hashMapOf(
-            "id" to (siswa.id.takeIf { it != 0L } ?: docRef.id.hashCode()),
             "nama" to siswa.nama,
             "alamat" to siswa.alamat,
             "telpon" to siswa.telpon
@@ -43,37 +42,55 @@ class FirebaseRepositorySiswa : RepositorySiswa {
     }
     override suspend fun getSatuSiswa(id: Long): Siswa? {
         return try {
-            val query = collection.whereEqualTo("id", id).get().await()
-            query.documents.firstOrNull()?.let { doc ->
+            val allDocs = collection.get().await().documents
+            val matchedDoc = allDocs.find { doc ->
+                doc.id.hashCode().toLong() == id
+            }
+
+            matchedDoc?.let { doc ->
                 Siswa(
-                    id = doc.getLong("id")?.toLong() ?: 0,
+                    id = id,
                     nama = doc.getString("nama") ?: "",
                     alamat = doc.getString("alamat") ?: "",
                     telpon = doc.getString("telpon") ?: ""
                 )
             }
         } catch (e: Exception) {
-            println("Gagal baca data siswa : ${e.message}")
             null
         }
     }
     override suspend fun editSatuSiswa(id: Long, siswa: Siswa) {
-        val docQuery = collection.whereEqualTo("id", id).get().await()
-        val docId = docQuery.documents.firstOrNull()?.id ?: return
-        collection.document(docId).set(
-            mapOf(
-                "id" to siswa.id,
-                "nama" to siswa.nama,
-                "alamat" to siswa.alamat,
-                "telpon" to siswa.telpon
-            )
-        ).await()
+        try {
+            val allDocs = collection.get().await().documents
+            val matchedDoc = allDocs.find { doc ->
+                doc.id.hashCode().toLong() == id
+            }
+
+            matchedDoc?.let { doc ->
+                collection.document(doc.id).set(
+                    mapOf(
+                        "nama" to siswa.nama,
+                        "alamat" to siswa.alamat,
+                        "telpon" to siswa.telpon
+                    )
+                ).await()
+            }
+        } catch (e: Exception) {
+        }
     }
 
     override suspend fun hapusSatuSiswa(id: Long) {
-        val docQuery = collection.whereEqualTo("id", id).get().await()
-        val docId = docQuery.documents.firstOrNull()?.id ?: return
-        collection.document(docId).delete().await()
+        try {
+            val allDocs = collection.get().await().documents
+            val matchedDoc = allDocs.find { doc ->
+                doc.id.hashCode().toLong() == id
+            }
+
+            matchedDoc?.let { doc ->
+                collection.document(doc.id).delete().await()
+            }
+        } catch (e: Exception) {
+        }
     }
 
 }

@@ -61,10 +61,8 @@ fun DetailSiswaScreen(
             val uiState = viewModel.statusUIDetail
             FloatingActionButton(
                 onClick = {
-                    when(uiState){
-                        is StatusUIDetail.Success ->
-                            navigateToEditItem(uiState.satusiswa!!.id.toInt()) else->{}
-                    }
+                    val siswa = (uiState as? StatusUIDetail.Success)?.satusiswa
+                    siswa?.let { navigateToEditItem(it.id.toInt()) }
                 },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
@@ -105,9 +103,14 @@ private fun BodyDetailDataSiswa(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         when(statusUIDetail){
-            is StatusUIDetail.Success -> DetailDataSiswa(
-                siswa = statusUIDetail.satusiswa,
-                modifier = Modifier.fillMaxWidth())
+            is StatusUIDetail.Success -> {
+                val siswa = statusUIDetail.satusiswa
+                if (siswa != null) {
+                    DetailDataSiswa(
+                        siswa = siswa,
+                        modifier = Modifier.fillMaxWidth())
+                }
+            }
             else -> {}
         }
         OutlinedButton(
@@ -132,7 +135,7 @@ private fun BodyDetailDataSiswa(
 
 @Composable
 fun DetailDataSiswa(
-    siswa: Siswa?, modifier: Modifier = Modifier
+    siswa: Siswa, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -149,7 +152,7 @@ fun DetailDataSiswa(
         ) {
             BarisDetailData(
                 labelResID = R.string.nama1,
-                itemDetail = siswa!!.nama,
+                itemDetail = siswa.nama,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
