@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myfirebase.modeldata.DetailSiswa
 import com.example.myfirebase.modeldata.UIStateSiswa
 import com.example.myfirebase.repositori.RepositorySiswa
 import com.example.myfirebase.view.route.DestinasiDetail
@@ -33,6 +34,12 @@ fun updateUiState(detailsiswa: DetailSiswa) {
     uiStateSiswa =
         UIStateSiswa(detailsiswa = detailsiswa, isEntryValid = validasiInput
             (detailsiswa))
+}
+
+private fun validasiInput(uiState: DetailSiswa = uiStateSiswa.detailsiswa): Boolean {
+    return with(uiState) {
+        nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
+    }
 }
 
 
